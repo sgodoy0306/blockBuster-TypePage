@@ -27,7 +27,9 @@ module.exports = {
     getActorsByMovieId,
     getMoviesByActorId,
     addActorToMovie,
-    removeActorFromMovie
+    removeActorFromMovie,
+    addUser,
+    getUserByEmail
 };
 
 // View all movies
@@ -207,3 +209,22 @@ async function removeActorFromMovie(movieId, actorId) {
     }
     return res.rows[0];
 };
+
+// Add a new user 
+
+async function addUser(username, email, password_hash, is_admin = false){
+    const res = await dbClient.query(`INSERT INTO users (username, email, password_hash, is_admin) VALUES ($1, $2, $3, $4) RETURNING *`, [username, email, password_hash, is_admin]);
+    return res.rows[0];
+}
+
+
+
+//  View user by email
+
+async function getUserByEmail(email) {
+    const res = await dbClient.query(`SELECT * FROM users WHERE email = $1`, [email]);
+    if (res.rowCount === 0) {
+        return undefined;
+    }
+    return res.rows[0];
+}

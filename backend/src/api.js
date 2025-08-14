@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = "/api";
@@ -18,6 +19,7 @@ const MOVIE_FIELDS = [
 ];
 
 const STUDIO_FIELDS = ["name", "description", "year_creation", "founder"];
+const USER_FIELDS = ["username", "email", "password"];
 
 app.use(express.json());
 app.listen(PORT, () => {
@@ -43,10 +45,16 @@ const {
   getActorsByMovieId,
   getMoviesByActorId,
   addActorToMovie,
-  removeActorFromMovie
+  removeActorFromMovie,
+  addUser,
+  getUserByEmail
 } = require("./scripts/blockBuster.js");
 
 // functions to validate fields and extract data from request bodies
+function validateUserFields(body){
+  return USER_FIELDS.every((field) => body[field]);
+}
+
 function validateMovieFields(body) {
   return MOVIE_FIELDS.every((field) => body[field]);
 }
@@ -65,7 +73,7 @@ function extractStudioFieldsArray(body) {
 // functions to handle errors and responses
 function handleNotFound(res, itemName) {
   console.log(`Error: ${itemName} not found`);
-  return res.sendStatus(404);
+  return res.status(404).json({error: `${itemName} not found`});
 }
 function handleMissingFields(res) {
   console.log("Error: Missing required fields");
@@ -74,6 +82,10 @@ function handleMissingFields(res) {
 function handleCouldNotBeAdded(res, itemName) {
   console.log(`Error: ${itemName} could not be added`);
   return res.status(500).json({ error: `${itemName} could not be added` });
+}
+function handleWrongPassword(res){
+  console.log('Error: Wrong password');
+  return res.status(400).json({error:'Wrong password'});
 }
 
 // Health route
@@ -287,3 +299,50 @@ app.delete(`${API_BASE_URL}/movie/:id/actor/:actorId`, async (req, res) => {
   }
   res.json(result);
 });
+
+//
+app.post(`${API_BASE_URL}/register`, async (req, res) =>{
+  const { username, email, password, is_admin} = req.body;
+  if(!validateUserFields(req.body)) {
+    return handleMissingFields(res);
+  }
+  const existingUser = await getUserByEmail(email);
+  if(existingUser){
+    return res.status(400).json({error:'This email is already registered'});
+  }
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await addUser(username, email, hashedPassword, is_admin);
+
+  if(!user){
+    return handleCouldNotBeAdded(res, "User");
+  }
+
+  res.json(user);
+})
+
+app.post(`${API_BASE_URL}/login`, async (req, res) => {
+  const { email, password} = req.body;
+
+  if(!email || !password){
+    return handleMissingFields(res);
+  }
+  
+  const user = await getUserByEmail(email);
+
+  if(!user){
+    return handleNotFound(res, "User");
+  }
+
+  const validPassword = await bcrypt.compare(password, user.password_hash);
+  
+  if(!validPassword){
+    return handleWrongPassword(res);
+  }
+
+  res.json({
+    message: 'Login Succesful',
+    username: user.username,
+    email: user.email,
+    is_admin: user.is_admin
+  });
+})
