@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+    --color-blockbuster: #1F4489;
+    --color-blockbuster-50: #EEF2FF;
+    --color-blockbuster-100: #E0E7FF;
+    --color-blockbuster-200: #C7D2FE;
+    --color-blockbuster-300: #A5B4FC;
+    --color-blockbuster-400: #818CF8;
+    --color-blockbuster-500: #1F4489;
+    --color-blockbuster-600: #1E3A8A;
+    --color-blockbuster-700: #1D4ED8;
+    --color-blockbuster-800: #1E40AF;
+    --color-blockbuster-900: #1E3A8A;
+    
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Archivo Black', sans-serif;
+}
+
+@tailwind utilities;
+

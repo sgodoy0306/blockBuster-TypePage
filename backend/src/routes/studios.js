@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { authenticateToken } = require("../middlewares/auth");
-const { authorizeRole } = require("../middlewares/roles");
+const authenticateToken = require("../middlewares/auth");
+const authorizeRole = require("../middlewares/roles");
 const studiosController = require("../controllers/studiosController");
 
 // Get all studios
