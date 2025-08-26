@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authenticateToken  = require("../middlewares/auth");
-const authorizeRole  = require("../middlewares/roles");
-const moviesController = require("../controllers/moviesController");
+const { authenticateToken  }  = require("../middlewares/auth");
+const { authorizeRole }  = require("../middlewares/roles");
+const  moviesController  = require("../controllers/moviesController");
 
 // Get all movies
 router.get("/movies", moviesController.getAllMovies);

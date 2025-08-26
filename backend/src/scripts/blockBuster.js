@@ -8,30 +8,6 @@ const dbClient = new Pool ({
     password: 'postgres',
 });
 
-module.exports = {
-    getAllMovies,
-    getOneMovie,
-    addOneMovie,
-    deleteOneMovie,
-    updateOneMovie,
-    getAllStudios,
-    getOneStudio,
-    addOneStudio,
-    deleteOneStudio,
-    updateOneStudio,
-    getAllActors,
-    getOneActor,
-    addOneActor,
-    updateOneActor,
-    deleteOneActor,
-    getActorsByMovieId,
-    getMoviesByActorId,
-    addActorToMovie,
-    removeActorFromMovie,
-    addUser,
-    getUserByEmail
-};
-
 // View all movies
 async function getAllMovies() {
     const res = await dbClient.query(`SELECT * FROM movies`);
@@ -228,3 +204,29 @@ async function getUserByEmail(email) {
     }
     return res.rows[0];
 }
+
+
+
+module.exports = {
+    getAllMovies,
+    getOneMovie,
+    addOneMovie,
+    deleteOneMovie,
+    updateOneMovie,
+    getAllStudios,
+    getOneStudio,
+    addOneStudio,
+    deleteOneStudio,
+    updateOneStudio,
+    getAllActors,
+    getOneActor,
+    addOneActor,
+    updateOneActor,
+    deleteOneActor,
+    getActorsByMovieId,
+    getMoviesByActorId,
+    addActorToMovie,
+    removeActorFromMovie,
+    addUser,
+    getUserByEmail
+};

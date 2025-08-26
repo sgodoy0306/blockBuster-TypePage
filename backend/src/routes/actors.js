@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authenticateToken = require("../middlewares/auth");
-const authorizeRole = require("../middlewares/roles");
-const actorsController = require("../controllers/actorsController");
+const { authenticateToken } = require("../middlewares/auth");
+const { authorizeRole } = require("../middlewares/roles");
+const  actorsController  = require("../controllers/actorsController");
 
 // Get all actors
 router.get("/actors", actorsController.getAllActors);
