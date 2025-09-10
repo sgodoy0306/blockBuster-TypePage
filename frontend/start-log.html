@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .chevron {
+            transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+        }
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockBuster 40th Anniversary</title>
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+</head>
+<body class="bg-gradient-to-b from-blockbuster to-blockbuster-700">
+    <nav class="flex h-10 lg:h-20 pt-2 pl-10 sm:h-16">
+        <div class="flex items-center gap-2 relative">
+            <!-- Dropdown trigger: solo visible si es admin -->
+            <button id="adminMenuBtn" class="mr-2 p-2 focus:outline-none hidden" aria-label="Admin menu">
+                <span class="block w-6 h-1 bg-yellow-300 mb-1"></span>
+                <span class="block w-6 h-1 bg-yellow-300 mb-1"></span>
+                <span class="block w-6 h-1 bg-yellow-300"></span>
+            </button>
+            <!-- Dropdown menu con submenús -->
+            <div id="adminDropdown" class="absolute left-0 top-15 mt-2 w-64 bg-blockbuster-700 border border-yellow-300 rounded shadow-lg z-50 hidden">
+                <ul class=" text-yellow-200">
+                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="movies">
+                        <span>Movies</span>
+                        <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
+                    </li>
+                    <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 ml-6 rounded" data-menu="movies">
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/movies-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/movies-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/movies-delete.html'">Delete</li>
+                    </ul>
+                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="actors">
+                        <span>Actors</span>
+                        <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
+                    </li>
+                    <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 ml-6 rounded" data-menu="actors">
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/actors-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/actors-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/actors-delete.html'">Delete</li>
+                    </ul>
+                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="studios">
+                        <span>Estudios</span>
+                        <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
+                    </li>
+                    <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 mb-2 ml-6 rounded" data-menu="studios">
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/studios-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/studios-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/studios-delete.html'">Delete</li>
+                    </ul>
+                </ul>
+            </div>
+            <button id="usernameButton" class="cursor-pointer text-yellow-300 font-bold text-sm lg:text-2xl sm:text-xl hover:underline">
+                Loading...
+            </button>
+        </div>
+    </nav>
+    <header class="flex flex-col items-center justify-center h-28 mt-60 select-none">
+        <h1 class="flex ">
+            <a href="https://bendblockbuster.com/" target="_blank">
+                <img src="./templates/Blockbuster-Symbol.png" alt="BlockBuster-icon" class="h-16 px-10 sm:h-24 lg:h-36">
+            </a>
+        </h1>
+        <h3 class="font-display text-yellow-400 sm:text-2xl pointer-events-none lg:text-4xl">
+            40th Anniversary
+        </h3>
+    </header>
+    <section class="flex flex-col justify-center items-center mt-16 gap-10">
+        <form class="flex group lg:mt-10">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search movies..."
+                class="flex-grow px-4 py-2 rounded-l-md border text-yellow-300 w-36 font-body text-xs h-10 sm:w-52 sm:text-sm lg:w-56 lg:h-14 focus:outline-none"
+            >
+            <input
+                type="submit"
+                value="Search"
+                class="bg-yellow-300 text-blockbuster-700 font-bold px-4 py-2 rounded-r-md cursor-pointer hover:text-blockbuster-500 lg:text-xl"
+            >
+        </form>
+    </section>
+
+    <footer class="bg-blockbuster-600 h-20 text-yellow-200 py-4 mt-80 sm:mt-80 lg:mt-96 flex justify-center">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center px-4">
+            <div class="text-sm">
+                &copy; 2024 BlockBuster. All rights reserved.
+            </div>
+            <div class="flex space-x-4 mt-2 sm:mt-0">
+                <a href="#" class="hover:underline">Contact us</a>
+                <a href="#" class="hover:underline">Page info</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Function to get current user from API y mostrar menú admin si corresponde
+        async function loadCurrentUser() {
+            const usernameBtn = document.getElementById('usernameButton');
+            const adminMenuBtn = document.getElementById('adminMenuBtn');
+            try {
+                const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+                if (!token) {
+                    usernameBtn.textContent = 'Guest';
+                    adminMenuBtn.classList.add('hidden');
+                    return;
+                }
+                const res = await fetch('http://localhost:3001/api/users/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (res.ok) {
+                    const user = await res.json();
+                    usernameBtn.textContent = user.username || 'Guest';
+                    if (user.is_admin) {
+                        adminMenuBtn.classList.remove('hidden');
+                    } else {
+                        adminMenuBtn.classList.add('hidden');
+                    }
+                } else {
+                    usernameBtn.textContent = 'Guest';
+                    adminMenuBtn.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading user:', error);
+                usernameBtn.textContent = 'Guest';
+                adminMenuBtn.classList.add('hidden');
+            }
+        }
+
+        // Dropdown toggle y animación de flecha
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCurrentUser();
+            const adminMenuBtn = document.getElementById('adminMenuBtn');
+            const adminDropdown = document.getElementById('adminDropdown');
+            adminMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                adminDropdown.classList.toggle('hidden');
+            });
+            // Cierra el dropdown al hacer click fuera
+            document.addEventListener('click', function(e) {
+                if (!adminDropdown.classList.contains('hidden')) {
+                    adminDropdown.classList.add('hidden');
+                }
+            });
+            // Evita que el click dentro del dropdown lo cierre
+            adminDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // Submenús: solo uno abierto a la vez, animación de flecha
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const menu = item.getAttribute('data-menu');
+                    const submenu = document.querySelector(`.submenu[data-menu="${menu}"]`);
+                    const chevron = item.querySelector('.chevron');
+                    // Cierra otros submenús y resetea flechas
+                    document.querySelectorAll('.submenu').forEach(ul => {
+                        if (ul !== submenu) ul.classList.add('hidden');
+                    });
+                    document.querySelectorAll('.dropdown-item .chevron').forEach(svg => {
+                        if (svg !== chevron) svg.classList.remove('rotate-90');
+                    });
+                    // Toggle el submenú actual y la flecha
+                    if (submenu.classList.contains('hidden')) {
+                        submenu.classList.remove('hidden');
+                        chevron.classList.add('rotate-90');
+                    } else {
+                        submenu.classList.add('hidden');
+                        chevron.classList.remove('rotate-90');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
