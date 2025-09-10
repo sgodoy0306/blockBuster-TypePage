@@ -1,8 +1,9 @@
 const express = require("express");
 require("dotenv").config();
 
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const API_BASE_URL = "/api";
 
 app.use(express.json());
@@ -12,6 +13,9 @@ const movieRoutes = require("./routes/movies");
 const studioRoutes = require("./routes/studios");
 const actorRoutes = require("./routes/actors");
 const userRoutes = require("./routes/users");
+const cors = require("cors");
+
+app.use(cors());
 
 // Health route
 app.get(`${API_BASE_URL}/health`, (req, res) => {

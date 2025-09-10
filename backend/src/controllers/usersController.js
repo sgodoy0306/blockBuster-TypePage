@@ -35,8 +35,12 @@ const register = async (req, res) => {
     return handleMissingFields(res);
   }
   
-  const existingUser = await db.getUserByEmail(email);
-  if (existingUser) {
+  const existingUsername = await db.getUserByUsername(username);
+  const existingEmail = await db.getUserByEmail(email);
+  if (existingUsername) {
+    return res.status(400).json({error:'This Username is already registered'});
+  }
+  if (existingEmail) {
     return res.status(400).json({error:'This email is already registered'});
   }
   
@@ -70,18 +74,45 @@ const login = async (req, res) => {
   }
 
   const token = jwt.sign(
-    {id: user.id, username: user.username, is_admin: user.is_admin},
+    {id: user.id, email: user.email, username: user.username, is_admin: user.is_admin},
     SECRET_KEY, 
     { expiresIn:"1h" }
   );
 
   res.json({
     message: 'Login Successful',
-    token
+    token,
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      is_admin: user.is_admin
+    }
   });
 };
 
+const getUserInfo = async (req, res) => {
+  try{
+    console.log("Decoded token:", req.user)
+    const email = req.user.email;
+    const user = await db.getUserByEmail(email);
+
+    if(!user) {
+      return handleNotFound(res, "User");
+    }
+    res.json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      is_admin: user.is_admin
+    });
+  } catch(err) {
+    res.status(500).json({ error: 'Server error'});
+  }
+}
+
 module.exports = {
   register,
-  login
+  login,
+  getUserInfo
 };

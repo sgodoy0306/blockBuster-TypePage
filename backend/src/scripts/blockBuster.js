@@ -204,6 +204,13 @@ async function getUserByEmail(email) {
     }
     return res.rows[0];
 }
+async function getUserByUsername(username) {
+    const res = await dbClient.query(`SELECT * FROM users WHERE username = $1`, [username]);
+    if (res.rowCount === 0) {
+        return undefined;
+    }
+    return res.rows[0];
+}
 
 
 
@@ -228,5 +235,6 @@ module.exports = {
     addActorToMovie,
     removeActorFromMovie,
     addUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserByUsername
 };
