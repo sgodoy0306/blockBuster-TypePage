@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Actor | Blockbuster</title>
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+</head>
+<body class="bg-gradient-to-b from-blockbuster to-blockbuster-700 min-h-screen font-['Roboto']">
+    <header class="h-24 bg-blockbuster-900 flex flex-row gap-7 items-center ">
+        <a href="start-log.html" class="flex h-16 ml-8">
+            <img src="templates/Blockbuster-Symbol.png" alt="">
+        </a>
+        <a href="actors-add.html"
+           class="bg-green-400 text-gray-800 flex gap h-12 w-24 rounded-xl font-body justify-center items-center text-xl p-2 hover:bg-blockbuster-300 hover:transition hover:duration-300 shadow-lg active:scale-95 active:shadow-inner transition-transform"
+           style="user-select: none;">
+            ADD
+        </a>
+        <a href="actors-edit.html"
+           class="bg-blue-400 text-gray-800 flex gap h-12 w-24 rounded-xl font-body justify-center items-center text-xl p-2 hover:bg-blockbuster-300 hover:transition hover:duration-300 shadow-lg active:scale-95 active:shadow-inner transition-transform"
+           style="user-select: none;">
+            EDIT
+        </a>
+    </header>
+    <div class="max-w-xl mx-auto mt-12 bg-white/90 rounded-lg shadow-lg p-8">
+        <h1 class="text-4xl font-bold text-blockbuster-700 mb-14 font-['Bebas Neue'] tracking-wide text-center font-body ">
+            DELETE ACTOR
+        </h1>
+        <form id="delete-actor-form" class="space-y-5">
+            <div>
+                <label class="block text-blockbuster-700 font-semibold mb-1 font-display text-2xl" for="actor-select">Select Actor</label>
+                <select id="actor-select" name="actor-select" required class="w-full px-4 py-2 rounded border border-blockbuster-200 focus:outline-none focus:ring-2 focus:ring-blockbuster-500 bg-blockbuster-50">
+                    <option value="">-- Select an actor --</option>
+                </select>
+            </div>
+            <p id="message" class="font-body text-center mt-2"></p>
+            <div class="flex justify-center">
+                <button type="submit" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-8 rounded transition-colors duration-200 shadow-lg font-display text-2xl active:scale-95 active:shadow-inner transition-transform">
+                    Delete
+                </button>
+            </div>
+
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("form");
+            const actorSelect = document.getElementById("actor-select");
+            const message = document.getElementById("message");
+
+            const  API_URL_ACTORS = "http://localhost:3001/api/actors"
+            const API_URL_ACTOR = "http://localhost:3001/api/actor"
+
+            async function loadActors() {
+                try{
+
+                message.textContent = "Loading Actors..";
+                message.className = "font-body text-center mt-2 text-blockbuster-500";
+
+                const response = await fetch(API_URL_ACTORS);
+
+                if(!response.ok){
+                    console.error("Error loading actors");
+                    return;
+                }   
+
+                const actors = await response.json();
+
+                console.log("Actors loaded successfully");
+
+                actorSelect.innerHTML = '<option value ="">-- Select an actor -- </option>'
+
+                actors.forEach((actors) => {
+                    const option = document.createElement("option");
+                    option.value = actors.id;
+                    option.textContent = `${actors.name}`;
+                    actorSelect.appendChild(option);
+                });
+
+                message.textContent = "";
+                message.className = "font-body text-center mt-2";
+                
+                }catch (error) {
+                    console.error("Error loading actors: ", error);
+                    message.textContent = "Error loading actors"
+                    message.className = "font-body text-center mt-2 text-red-500";
+                }
+            }
+            form.addEventListener("submit", async function(e) {
+                e.preventDefault();
+
+                const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+                const id = actorSelect.value;
+
+                if(!id){
+                    message.textContent = "Please, select an actor";
+                    message.classList = "font-body text-center mt-2 text-red-500";
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_URL_ACTOR}/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": token ? `Bearer ${token}` : ""
+                        },
+                    });
+
+                    let result;
+                    try {
+                        result = await response.json();
+                    } catch (jsonError) {
+                        if (response.status === 200 || response.status === 204) {
+                            result = { status: "OK", message: "Actor deleted" };
+                        } else {
+                            const errorText = await response.text();
+                            message.textContent = `Error deleting the actor: ${errorText || response.statusText}`;
+                            message.className = "font-body text-center mt-2 text-red-500";
+                            return;
+                        }
+                    }
+
+                    if (!response.ok) {
+                        let errorMessage = `Error ${response.status}: ${response.statusText}`;
+                        console.log(errorMessage);
+                        message.textContent = errorMessage;
+                        message.className = "font-body text-center mt-2 text-red-500";
+                        return;
+                    }
+
+                    console.log("Actor deleted:", result);
+
+                    message.textContent = "Actor deleted successfully";
+                    message.className = "font-body text-center mt-2 text-red-500"; 
+
+                    actorSelect.value = "";
+
+                    // Espera 2 segundos antes de limpiar el mensaje y recargar la lista
+                    setTimeout(async () => {
+                        message.textContent = "";
+                        await loadActors();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error("Error deleting the actor:", error);
+                    message.textContent = "Error deleting the actor";
+                    message.className = "font-body text-center mt-2 text-red-500";
+                }
+            });
+
+            loadActors();
+        });
+    </script>
+</body>
+</html>
+</html>
+    </script>
+</body>
+</html>
