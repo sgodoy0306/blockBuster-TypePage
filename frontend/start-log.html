@@ -8,6 +8,9 @@
         .rotate-90 {
             transform: rotate(90deg);
         }
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,37 +36,48 @@
             <!-- Dropdown menu con submenús -->
             <div id="adminDropdown" class="absolute left-0 top-15 mt-2 w-64 bg-blockbuster-700 border border-yellow-300 rounded shadow-lg z-50 hidden">
                 <ul class=" text-yellow-200">
-                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="movies">
+                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between " data-menu="movies">
                         <span>Movies</span>
                         <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
                     </li>
                     <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 ml-6 rounded" data-menu="movies">
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/movies-add.html'">Add</li>
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/movies-edit.html'">Edit</li>
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/movies-delete.html'">Delete</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='movies-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='movies-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='movies-delete.html'">Delete</li>
                     </ul>
                     <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="actors">
                         <span>Actors</span>
                         <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
                     </li>
                     <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 ml-6 rounded" data-menu="actors">
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/actors-add.html'">Add</li>
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/actors-edit.html'">Edit</li>
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/actors-delete.html'">Delete</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='actors-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='actors-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='actors-delete.html'">Delete</li>
                     </ul>
                     <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="studios">
-                        <span>Estudios</span>
+                        <span>Studios</span>
                         <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
                     </li>
                     <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 mb-2 ml-6 rounded" data-menu="studios">
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/studios-add.html'">Add</li>
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/studios-edit.html'">Edit</li>
-                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='/admin/studios-delete.html'">Delete</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='studios-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='studios-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='studios-delete.html'">Delete</li>
                     </ul>
                 </ul>
             </div>
+                <!-- Dropdown para guest -->
+                <div id="guestDropdown" class="absolute left-0 top-15 mt-2 w-40 bg-blockbuster-700 border border-yellow-300 rounded shadow-lg z-50 hidden">
+                    <ul class="text-yellow-200">
+                        <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" onclick="location.href='login.html'">
+                            <span>Log In</span>
+                        </li>
+                    </ul>
+                </div>
             <button id="usernameButton" class="cursor-pointer text-yellow-300 font-bold text-sm lg:text-2xl sm:text-xl hover:underline">
-                Loading...
+                <span id="usernameText">Loading...</span>
+                <svg id="guestChevron" class="chevron w-5 h-5 text-yellow-300 ml-2 transition-transform inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
             </button>
         </div>
     </nav>
@@ -105,15 +119,24 @@
         </div>
     </footer>
     <script>
-        // Function to get current user from API y mostrar menú admin si corresponde
+        // Function to get current user from API y mostrar menú admin o guest si corresponde
         async function loadCurrentUser() {
             const usernameBtn = document.getElementById('usernameButton');
             const adminMenuBtn = document.getElementById('adminMenuBtn');
+            const guestDropdown = document.getElementById('guestDropdown');
             try {
                 const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
                 if (!token) {
-                    usernameBtn.textContent = 'Guest';
+                    document.getElementById('usernameText').textContent = 'Guest';
                     adminMenuBtn.classList.add('hidden');
+                    const guestChevron = document.getElementById('guestChevron');
+                    usernameBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        guestDropdown.classList.toggle('hidden');
+                        guestChevron.classList.toggle('rotate-180');
+                    };
+                    guestChevron.style.display = 'inline-block';
+                    guestChevron.classList.remove('rotate-180');
                     return;
                 }
                 const res = await fetch('http://localhost:3001/api/users/me', {
@@ -125,45 +148,75 @@
                 });
                 if (res.ok) {
                     const user = await res.json();
-                    usernameBtn.textContent = user.username || 'Guest';
+                    document.getElementById('usernameText').textContent = user.username || 'Guest';
+                    const guestChevron = document.getElementById('guestChevron');
+                    guestChevron.style.display = 'none';
                     if (user.is_admin) {
                         adminMenuBtn.classList.remove('hidden');
+                        guestDropdown.classList.add('hidden');
+                        usernameBtn.onclick = null;
                     } else {
                         adminMenuBtn.classList.add('hidden');
+                        guestDropdown.classList.add('hidden');
+                        usernameBtn.onclick = null;
                     }
                 } else {
-                    usernameBtn.textContent = 'Guest';
+                    document.getElementById('usernameText').textContent = 'Guest';
                     adminMenuBtn.classList.add('hidden');
+                    const guestChevron = document.getElementById('guestChevron');
+                    usernameBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        guestDropdown.classList.toggle('hidden');
+                        guestChevron.classList.toggle('rotate-180');
+                    };
+                    guestChevron.style.display = 'inline-block';
+                    guestChevron.classList.remove('rotate-180');
                 }
             } catch (error) {
                 console.error('Error loading user:', error);
-                usernameBtn.textContent = 'Guest';
+                document.getElementById('usernameText').textContent = 'Guest';
                 adminMenuBtn.classList.add('hidden');
+                const guestChevron = document.getElementById('guestChevron');
+                usernameBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    guestDropdown.classList.toggle('hidden');
+                    guestChevron.classList.toggle('rotate-180');
+                };
+                guestChevron.style.display = 'inline-block';
+                guestChevron.classList.remove('rotate-180');
             }
         }
-
         // Dropdown toggle y animación de flecha
         document.addEventListener('DOMContentLoaded', function() {
             loadCurrentUser();
             const adminMenuBtn = document.getElementById('adminMenuBtn');
             const adminDropdown = document.getElementById('adminDropdown');
+            const guestDropdown = document.getElementById('guestDropdown');
             adminMenuBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 adminDropdown.classList.toggle('hidden');
             });
-            // Cierra el dropdown al hacer click fuera
+            // Cierra el dropdown admin al hacer click fuera
             document.addEventListener('click', function(e) {
                 if (!adminDropdown.classList.contains('hidden')) {
                     adminDropdown.classList.add('hidden');
+                }
+                if (!guestDropdown.classList.contains('hidden')) {
+                    guestDropdown.classList.add('hidden');
+                    const guestChevron = document.getElementById('guestChevron');
+                    if (guestChevron) guestChevron.classList.remove('rotate-180');
                 }
             });
             // Evita que el click dentro del dropdown lo cierre
             adminDropdown.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
+            guestDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
 
             // Submenús: solo uno abierto a la vez, animación de flecha
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            const dropdownItems = document.querySelectorAll('.dropdown-item[data-menu]');
             dropdownItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.stopPropagation();
