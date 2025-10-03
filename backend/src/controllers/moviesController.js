@@ -2,7 +2,7 @@ const db = require("../scripts/blockBuster");
 
 const MOVIE_FIELDS = [
   "name", "year", "description", "price", "stock", "duration",
-  "mpa_rating", "genre", "country", "director", "film_studio_id", "image_path",
+  "mpa_rating", "genre", "director", "film_studio_id", "image_path",
 ];
 
 function validateMovieFields(body) {

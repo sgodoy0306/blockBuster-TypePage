@@ -17,7 +17,6 @@ create table movies (
     duration integer not null,
     mpa_rating varchar(10) not null,
     genre varchar(50) not null,
-    country varchar(50) not null,
     director varchar(100) not null,
     film_studio_id integer not null references film_studios(id),
     image_path text not null

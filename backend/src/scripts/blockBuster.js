@@ -24,8 +24,8 @@ async function getOneMovie(id) {
 };
 
 // Add one movie
-async function addOneMovie(name, year, description, price, stock, duration, mpa_rating, genre, country, director, film_studio_id, image_path) {
-    const res = await dbClient.query(`INSERT INTO movies (name, year, description, price, stock, duration, mpa_rating, genre, country, director, film_studio_id, image_path) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, [name, year, description, price, stock, duration, mpa_rating, genre, country, director, film_studio_id, image_path]);
+async function addOneMovie(name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path) {
+    const res = await dbClient.query(`INSERT INTO movies (name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, [name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path]);
     if (res.rowCount === 0) {
         return undefined;
     }
@@ -42,8 +42,8 @@ async function deleteOneMovie(id) {
 };
 
 // Update one movie
-async function updateOneMovie(id, name, year, description, price, stock, duration, mpa_rating, genre, country, director, film_studio_id, image_path) {
-    const res = await dbClient.query(`UPDATE movies SET name = $2, year = $3, description = $4, price = $5, stock = $6, duration = $7, mpa_rating = $8, genre = $9, country = $10, director = $11, film_studio_id = $12, image_path = $13 WHERE id = $1 RETURNING *`, [id, name, year, description, price, stock, duration, mpa_rating, genre, country, director, film_studio_id, image_path]);
+async function updateOneMovie(id, name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path) {
+    const res = await dbClient.query(`UPDATE movies SET name = $2, year = $3, description = $4, price = $5, stock = $6, duration = $7, mpa_rating = $8, genre = $9, director = $10, film_studio_id = $11, image_path = $12 WHERE id = $1 RETURNING *`, [id, name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path]);
     if(res.rowCount === 0){
         return undefined;
     }
