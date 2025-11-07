@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Studio | Blockbuster</title>
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-b from-blockbuster to-blockbuster-700 min-h-screen font-['Roboto']">
+
+    <header class="h-24 bg-blockbuster-900 flex flex-row gap-7 items-center ">
+
+        <a href="start-log.html" class="flex h-16 ml-8">
+            <img src="templates/Blockbuster-Symbol.png" alt="">
+        </a>
+        <a href="studios-edit.html" class="bg-blockbuster-400 text-gray-800 flex gap h-12 w-24 rounded-xl font-body justify-center items-center text-xl p-2 hover:bg-blockbuster-300 hover:transition hover:duration-300">
+            EDIT
+        </a>
+        <a href="studios-delete.html" class="bg-red-400 text-gray-800 flex gap h-12 w-28 rounded-xl font-body justify-center items-center text-xl p-6 hover:bg-red-300 hover:transition hover:duration-300">
+            DELETE
+        </a>
+
+    </header>
+    <div class="max-w-xl mx-auto mt-12 bg-white/90 rounded-lg shadow-lg p-8">
+        <h1 class="text-4xl font-bold text-blockbuster-700 mb-14 font-['Bebas Neue'] tracking-wide text-center font-body ">
+            ADD STUDIO
+        </h1>
+        <form id="add-studio-form" class="space-y-5">
+            <div>
+                <label class="block text-blockbuster-700 font-semibold mb-1 font-display text-2xl" for="name">Studio Name</label>
+                <input type="text" id="name" name="name" required class="w-full px-4 py-2 rounded border border-blockbuster-200 focus:outline-none focus:ring-2 focus:ring-blockbuster-500 bg-blockbuster-50"/>
+            </div>
+            <div>
+                <label class="block text-blockbuster-700 font-semibold mb-1 font-display text-2xl" for="year_creation">Founded Year</label>
+                <input type="number" id="year_creation" name="year_creation" min="1900" max="2100" required class="w-full px-4 py-2 rounded border border-blockbuster-200 focus:outline-none focus:ring-2 focus:ring-blockbuster-500 bg-blockbuster-50"/>
+            </div>
+            <div>
+                <label class="block text-blockbuster-700 font-semibold mb-1 font-display text-2xl" for="founder">Founder</label>
+                <input type="text" id="founder" name="founder" required class="w-full px-4 py-2 rounded border border-blockbuster-200 focus:outline-none focus:ring-2 focus:ring-blockbuster-500 bg-blockbuster-50"/>
+            </div>
+            <div>
+                <label class="block text-blockbuster-700 font-semibold mb-1 font-display text-2xl" for="description">Description</label>
+                <textarea id="description" name="description" rows="3" required class="w-full px-4 py-2 rounded border border-blockbuster-200 focus:outline-none focus:ring-2 focus:ring-blockbuster-500 bg-blockbuster-50"></textarea>
+            </div>
+            <p id="message" class="font-body text-center mt-2"></p>
+
+            <div class="flex justify-center">
+                <button type="submit" class="bg-green-700 hover:bg-blockbuster-500 text-white font-bold py-2 px-8 rounded transition-colors duration-200 shadow-md font-display text-2xl cursor-pointer">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('add-studio-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const message = document.getElementById('message');
+            message.textContent = '';
+            message.className = "font-body text-center mt-2";
+            const name = document.getElementById('name').value.trim();
+            const year_creation = document.getElementById('year_creation').value.trim();
+            const founder = document.getElementById('founder').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+
+            // Adjust the API endpoint as needed
+            const API_URL = "http://localhost:3001/api/film_studios";
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": token ? `Bearer ${token}` : ""
+                    },
+                    body: JSON.stringify({
+                        name,
+                        year_creation: parseInt(year_creation, 10),
+                        founder,
+                        description
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    message.textContent = "Error adding studio: " + (errorText || response.statusText);
+                    message.className = "font-body text-center mt-2 text-red-500";
+                    return;
+                }
+
+                message.textContent = "Studio added successfully!";
+                message.className = "font-body text-center mt-2 text-green-600";
+                this.reset();
+            } catch (error) {
+                message.textContent = "Error adding studio: " + error.message;
+                message.className = "font-body text-center mt-2 text-red-500";
+            }
+        });
+    </script>
+</body>
+</html>
