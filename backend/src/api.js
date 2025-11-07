@@ -13,6 +13,7 @@ const movieRoutes = require("./routes/movies");
 const studioRoutes = require("./routes/studios");
 const actorRoutes = require("./routes/actors");
 const userRoutes = require("./routes/users");
+const reservationsRoutes = require("./routes/reservations");
 const cors = require("cors");
 
 app.use(cors());
@@ -29,6 +30,7 @@ app.use(API_BASE_URL, movieRoutes);
 app.use(API_BASE_URL, studioRoutes);
 app.use(API_BASE_URL, actorRoutes);
 app.use(API_BASE_URL, userRoutes);
+app.use(API_BASE_URL, reservationsRoutes);
 
 app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
