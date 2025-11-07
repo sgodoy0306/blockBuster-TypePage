@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .chevron {
+            transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+        }
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockBuster 40th Anniversary</title>
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+</head>
+<body class="bg-gradient-to-b from-blockbuster to-blockbuster-700">
+    <nav class="flex h-10 lg:h-20 pt-2 pl-10 sm:h-16 items-center">
+        <div class="flex items-center gap-2 relative">
+            
+            <!-- Dropdown trigger: only visible if admin -->
+            <button id="adminMenuBtn" class="mr-2 p-2 focus:outline-none hidden cursor-pointer" aria-label="Admin menu">
+                <span class="block w-6 h-1 bg-yellow-300 mb-1"></span>
+                <span class="block w-6 h-1 bg-yellow-300 mb-1"></span>
+                <span class="block w-6 h-1 bg-yellow-300"></span>
+            </button>
+            <!-- Dropdown menu with submenus -->
+            <div id="adminDropdown" class="absolute left-1.5 top-10 mt-2 w-64 bg-blockbuster-700 border border-yellow-300 rounded shadow-lg z-50 hidden">
+                <ul class=" text-yellow-200">
+                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between " data-menu="movies">
+                        <span>Movies</span>
+                        <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
+                    </li>
+                    <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 ml-6 rounded" data-menu="movies">
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='movies-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='movies-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='movies-delete.html'">Delete</li>
+                    </ul>
+                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="actors">
+                        <span>Actors</span>
+                        <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
+                    </li>
+                    <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 ml-6 rounded" data-menu="actors">
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='actors-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='actors-add-movie.html'">Add actor to movie</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='actors-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='actors-delete.html'">Delete</li>
+                    </ul>
+                    <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" data-menu="studios">
+                        <span>Studios</span>
+                        <svg class="chevron w-5 h-5 text-yellow-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9l7 7 7-7"></path></svg>
+                    </li>
+                    <ul class="submenu hidden flex-col bg-blockbuster-700 border-l border-yellow-300 mb-2 ml-6 rounded" data-menu="studios">
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='studios-add.html'">Add</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='studios-edit.html'">Edit</li>
+                        <li class="px-4 py-2 font-body text-sm hover:bg-blockbuster-600  cursor-pointer" onclick="location.href='studios-delete.html'">Delete</li>
+                    </ul>
+                </ul>
+            </div>
+                <!-- Dropdown para guest -->
+                <div id="guestDropdown" class="absolute left-0 top-15 mt-2 w-40 bg-blockbuster-700 border border-yellow-300 rounded shadow-lg z-50 hidden">
+                    <ul class="text-yellow-200">
+                        <li class="dropdown-item text-lg font-body relative px-4 py-2 hover:bg-blockbuster-600 cursor-pointer flex items-center justify-between" onclick="location.href='login.html'">
+                            <span>Log In</span>
+                        </li>
+                    </ul>
+                </div>
+            <button id="usernameButton" class="cursor-pointer text-yellow-300 font-bold text-sm lg:text-2xl sm:text-xl hover:underline">
+                <span id="usernameText">Loading...</span>
+                <svg id="guestChevron" class="chevron w-5 h-5 text-yellow-300 ml-2 transition-transform inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            
+        </div>
+        <button id="logoutBtn" class="hidden absolute right-16 ml-4 px-3 py-1 bg-yellow-400 text-blockbuster-500 rounded font-bold text-sm lg:text-xl hover:bg-yellow-300 transition-colors cursor-pointer">Log Out</button>
+    </nav>
+    <header class="flex flex-col items-center justify-center h-28 mt-60 select-none">
+        <h1 class="flex ">
+            <a href="movies-page.html">
+                <img src="./templates/Blockbuster-Symbol.png" alt="BlockBuster-icon" class="h-16 px-10 sm:h-24 lg:h-36">
+            </a>
+        </h1>
+        <h3 class="font-display text-yellow-400 sm:text-2xl pointer-events-none lg:text-4xl">
+            40th Anniversary
+        </h3>
+    </header>
+    <section class="flex flex-col justify-center items-center mt-16 gap-10">
+        <form class="flex group lg:mt-10">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search movies..."
+                class="flex-grow px-4 py-2 rounded-l-md border text-yellow-300 w-36 font-body text-xs h-10 sm:w-52 sm:text-sm lg:w-56 lg:h-14 focus:outline-none"
+            >
+            <input
+                type="submit"
+                value="Search"
+                class="bg-yellow-300 text-blockbuster-700 font-bold px-4 py-2 rounded-r-md cursor-pointer hover:text-blockbuster-500 lg:text-xl"
+            >
+        </form>
+    </section>
+
+    <footer class="bg-blockbuster-600 h-20 text-yellow-200 py-4 mt-80 sm:mt-80 lg:mt-96 flex justify-center">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center px-4">
+            <div class="text-sm">
+                &copy; 2024 BlockBuster. All rights reserved.
+            </div>
+            <div class="flex space-x-4 mt-2 sm:mt-0">
+                <a href="https://www.linkedin.com/in/sgodoy0306/" target="_blank" rel="noopener noreferrer" class="hover:underline">Contact us</a>
+
+            </div>
+        </div>
+    </footer>
+    <script src="./src/js/start-log.js"></script>
+</body>
+</html>

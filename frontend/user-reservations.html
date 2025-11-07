@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations | Blockbuster</title>
+    <link rel="stylesheet" href="./src/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        .reservation-card {
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .reservation-card:hover {
+            box-shadow: 0 8px 32px rgba(37,99,235,0.15);
+            transform: translateY(-4px) scale(1.01);
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-blockbuster to-blockbuster-700 min-h-screen font-['Roboto'] flex flex-col">
+    <nav class="flex h-10 lg:h-20 pt-2 pl-10 sm:h-16 items-center gap-4">
+        <a href="start-log.html" class="flex h-16 ml-2">
+            <img src="templates/Blockbuster-Symbol.png" alt="Blockbuster logo" class="h-10 lg:h-16">
+        </a>
+        <button id="logoutBtn" class="ml-auto mr-10 px-3 py-1 bg-yellow-400 text-blockbuster-500 rounded font-bold text-sm lg:text-xl hover:bg-yellow-300 transition-colors hidden cursor-pointer">Log Out</button>
+    </nav>
+    <header class="flex flex-col items-center justify-center h-28 mt-16 select-none">
+    <h1 class="font-display text-yellow-400 text-4xl lg:text-5xl mb-2 tracking-wide">My Reservations</h1>
+    <h3 class="font-display text-yellow-200 text-xl lg:text-2xl">Your reserved movies</h3>
+    </header>
+    <main class="max-w-6xl mx-auto mt-10 p-8 bg-white/90 rounded-lg shadow-lg flex-1 w-full">
+    <div id="loading" class="text-center text-blockbuster-700 text-2xl font-semibold mb-6 font-display">Loading reservations...</div>
+    <div id="error-message" class="hidden text-center text-red-600 text-xl font-semibold mb-6 font-display"></div>
+    <div id="reservations-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <div id="no-reservations" class="hidden text-center text-blockbuster-700 text-2xl font-semibold mt-8 font-display">You have no reservations.</div>
+    </main>
+    <footer class="bg-blockbuster-600 text-yellow-200 py-4 w-full">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center px-4">
+            <div class="text-sm">&copy; 2024 BlockBuster. All rights reserved.</div>
+            <div class="flex space-x-4 mt-2 sm:mt-0">
+                <a href="https://www.linkedin.com/in/sgodoy0306/" class="hover:underline" target="_blank" rel="noopener noreferrer">Contact us</a>
+            </div>
+        </div>
+    </footer>
+    <script src="src/js/user-reservations.js"></script>
+</body>
+</html>
