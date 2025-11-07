@@ -1,3 +1,4 @@
+
 const { Pool } = require("pg");
 
 const dbClient = new Pool ({
@@ -24,8 +25,8 @@ async function getOneMovie(id) {
 };
 
 // Add one movie
-async function addOneMovie(name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path) {
-    const res = await dbClient.query(`INSERT INTO movies (name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, [name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path]);
+async function addOneMovie(name, year, description, price, stock, duration, mpa_rating, director, film_studio_id, image_path) {
+    const res = await dbClient.query(`INSERT INTO movies (name, year, description, price, stock, duration, mpa_rating, director, film_studio_id, image_path) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, [name, year, description, price, stock, duration, mpa_rating, director, film_studio_id, image_path]);
     if (res.rowCount === 0) {
         return undefined;
     }
@@ -42,8 +43,8 @@ async function deleteOneMovie(id) {
 };
 
 // Update one movie
-async function updateOneMovie(id, name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path) {
-    const res = await dbClient.query(`UPDATE movies SET name = $2, year = $3, description = $4, price = $5, stock = $6, duration = $7, mpa_rating = $8, genre = $9, director = $10, film_studio_id = $11, image_path = $12 WHERE id = $1 RETURNING *`, [id, name, year, description, price, stock, duration, mpa_rating, genre, director, film_studio_id, image_path]);
+async function updateOneMovie(id, name, year, description, price, stock, duration, mpa_rating, director, film_studio_id, image_path) {
+    const res = await dbClient.query(`UPDATE movies SET name = $2, year = $3, description = $4, price = $5, stock = $6, duration = $7, mpa_rating = $8, director = $9, film_studio_id = $10, image_path = $11 WHERE id = $1 RETURNING *`, [id, name, year, description, price, stock, duration, mpa_rating, director, film_studio_id, image_path]);
     if(res.rowCount === 0){
         return undefined;
     }
@@ -186,6 +187,38 @@ async function removeActorFromMovie(movieId, actorId) {
     return res.rows[0];
 };
 
+// Add an genre to a specific movie
+async function addGenreToMovie(movieId, genreId) {
+    const res = await dbClient.query(`INSERT INTO genres_in_movies (movie_id, genre_id) VALUES ($1, $2) RETURNING *`, [movieId, genreId]);
+    if (res.rowCount === 0) {
+        return undefined;
+    }
+    return res.rows[0];
+};  
+
+// Remove an genre from a specific movie
+async function removeGenreFromMovie(movieId, genreId) {
+    const res = await dbClient.query(`DELETE FROM genres_in_movies WHERE movie_id = $1 AND genre_id = $2 RETURNING *`, [movieId, genreId]);
+    if (res.rowCount === 0) {
+        return undefined;
+    }
+    return res.rows[0];
+};
+
+// View all genres
+async function getAllGenres() {
+    const res = await dbClient.query(`SELECT * FROM genres ORDER BY name`);
+    return res.rows;
+};
+
+// Get genres by movie ID
+async function getGenresByMovieId(movieId) {
+    const res = await dbClient.query(`SELECT g.* FROM genres g
+    JOIN genres_in_movies gim ON g.id = gim.genre_id
+    WHERE gim.movie_id = $1`, [movieId]);
+    return res.rows;
+};
+
 // Add a new user 
 
 async function addUser(username, email, password_hash, is_admin = false){
@@ -212,7 +245,30 @@ async function getUserByUsername(username) {
     return res.rows[0];
 }
 
-
+// Reserve movie: decrease stock and save reservation
+async function reserveMovie(userId, movieId) {
+    // Baja el stock si hay disponible y guarda la reserva
+    const client = await dbClient.connect();
+    try {
+        await client.query('BEGIN');
+        // Verificar stock
+        const resMovie = await client.query('SELECT stock FROM movies WHERE id = $1 FOR UPDATE', [movieId]);
+        if (resMovie.rowCount === 0) throw new Error('Movie not found');
+        const stock = resMovie.rows[0].stock;
+        if (stock <= 0) throw new Error('No stock available');
+        // Bajar stock
+        await client.query('UPDATE movies SET stock = stock - 1 WHERE id = $1', [movieId]);
+        // Guardar reserva
+        await client.query('INSERT INTO reservations (user_id, movie_id) VALUES ($1, $2)', [userId, movieId]);
+        await client.query('COMMIT');
+        return true;
+    } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+    } finally {
+        client.release();
+    }
+}
 
 module.exports = {
     getAllMovies,
@@ -234,7 +290,13 @@ module.exports = {
     getMoviesByActorId,
     addActorToMovie,
     removeActorFromMovie,
+    getAllGenres,
+    getGenresByMovieId,
+    addGenreToMovie,
+    removeGenreFromMovie,
     addUser,
     getUserByEmail,
-    getUserByUsername
+    getUserByUsername,
+    reserveMovie,
+    query: dbClient.query.bind(dbClient)
 };
