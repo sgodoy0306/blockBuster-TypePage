@@ -111,8 +111,50 @@ const getUserInfo = async (req, res) => {
   }
 }
 
+// Get all reservations for a user
+const getUserReservations = async (req, res) => {
+  const userId = req.params.id;
+  // Only allow user to see their own reservations or admin
+  if (parseInt(userId) !== req.user.id && !req.user.is_admin) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+  try {
+    const dbClient = require('../scripts/blockBuster');
+    const result = await dbClient.query(
+      `SELECT r.id AS reservation_id, r.reserved_at, m.* FROM reservations r
+       JOIN movies m ON r.movie_id = m.id
+       WHERE r.user_id = $1
+       ORDER BY r.reserved_at DESC`,
+      [userId]
+    );
+    // Format response: { id: reservation_id, reserved_at, movie: {...} }
+    const reservations = result.rows.map(row => ({
+      id: row.reservation_id, // always reservation id
+      reserved_at: row.reserved_at,
+      movie: {
+        id: row.id, // movie id
+        name: row.name,
+        year: row.year,
+        description: row.description,
+        price: row.price,
+        stock: row.stock,
+        duration: row.duration,
+        mpa_rating: row.mpa_rating,
+        director: row.director,
+        film_studio_id: row.film_studio_id,
+        image_path: row.image_path
+      }
+    }));
+    res.json(reservations);
+  } catch (err) {
+    console.error('Error fetching reservations:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports = {
   register,
   login,
-  getUserInfo
+  getUserInfo,
+  getUserReservations
 };

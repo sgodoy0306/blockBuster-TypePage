@@ -1,8 +1,18 @@
+const reserveMovie = async (req, res) => {
+  const userId = req.user.id;
+  const movieId = req.params.id;
+  try {
+    await db.reserveMovie(userId, movieId);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 const db = require("../scripts/blockBuster");
 
 const MOVIE_FIELDS = [
   "name", "year", "description", "price", "stock", "duration",
-  "mpa_rating", "genre", "director", "film_studio_id", "image_path",
+  "mpa_rating", "director", "film_studio_id", "image_path",
 ];
 
 function validateMovieFields(body) {
@@ -98,6 +108,35 @@ const removeActorFromMovie = async (req, res) => {
   res.json(result);
 };
 
+const addGenreToMovie = async (req, res) => {
+  if (!req.body.genre_id) {
+    return handleMissingFields(res);
+  }
+  const result = await db.addGenreToMovie(req.params.id, req.body.genre_id);
+  if (!result) {
+    return handleCouldNotBeAdded(res, "Genre to Movie");
+  }
+  res.json(result);
+};
+
+const removeGenreFromMovie = async (req, res) => {
+  const result = await db.removeGenreFromMovie(req.params.id, req.params.genreId);
+  if (!result) {
+    return handleNotFound(res, "Genre in Movie");
+  }
+  res.json(result);
+};
+
+const getAllGenres = async (req, res) => {
+  const genres = await db.getAllGenres();
+  res.json(genres);
+};
+
+const getGenresByMovieId = async (req, res) => {
+  const genres = await db.getGenresByMovieId(req.params.id);
+  res.json(genres);
+};
+
 module.exports = {
   getAllMovies,
   getOneMovie,
@@ -106,5 +145,10 @@ module.exports = {
   updateOneMovie,
   getActorsByMovieId,
   addActorToMovie,
-  removeActorFromMovie
+  removeActorFromMovie,
+  getAllGenres,
+  getGenresByMovieId,
+  addGenreToMovie,
+  removeGenreFromMovie,
+  reserveMovie
 };
